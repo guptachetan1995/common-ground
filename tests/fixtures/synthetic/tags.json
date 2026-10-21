@@ -1,0 +1,22 @@
+{
+  "_label": "Synthetic fixture. Invented names and ids in the reserved range; not Qloo data.",
+  "results": {
+    "tags": [
+      {
+        "id": "urn:tag:synthetic:restaurant",
+        "name": "Restaurant",
+        "type": "urn:tag:synthetic:kind"
+      },
+      {
+        "id": "urn:tag:synthetic:bar",
+        "name": "Bar",
+        "type": "urn:tag:synthetic:kind"
+      },
+      {
+        "id": "urn:tag:synthetic:italian",
+        "name": "Italian",
+        "type": "urn:tag:synthetic:cuisine"
+      }
+    ]
+  }
+}

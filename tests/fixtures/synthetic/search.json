@@ -1,0 +1,37 @@
+{
+  "_label": "Synthetic fixture. Invented names and ids in the reserved range; not Qloo data.",
+  "results": [
+    {
+      "entity_id": "00000000-0000-4000-8000-c00000000001",
+      "name": "Sample Supper Room",
+      "type": "urn:entity:place",
+      "popularity": 0.62,
+      "disambiguation": "invented restaurant"
+    },
+    {
+      "entity_id": "00000000-0000-4000-8000-c00000000004",
+      "name": "Sample Person",
+      "type": "urn:entity:person",
+      "popularity": 0.4,
+      "disambiguation": "invented person"
+    },
+    {
+      "entity_id": "00000000-0000-4000-8000-c00000000002",
+      "name": "Sample Band",
+      "type": "urn:entity:artist",
+      "popularity": 0.8
+    },
+    {
+      "entity_id": "00000000-0000-4000-8000-c00000000003",
+      "name": "Sample Film",
+      "type": "urn:entity:movie"
+    },
+    {
+      "entity_id": "00000000-0000-4000-8000-c00000000005",
+      "name": "Sample Show",
+      "type": "urn:entity:tv_show",
+      "popularity": 0.1,
+      "disambiguation": "invented series"
+    }
+  ]
+}

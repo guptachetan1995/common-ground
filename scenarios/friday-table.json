@@ -1,0 +1,39 @@
+{
+  "label": "The Friday Table (fictional)",
+  "when": "Fri 6 Nov, 7:30 pm",
+  "place_text": "New York City",
+  "day": "friday",
+  "price_min": 2,
+  "price_max": 3,
+  "kind_query": "restaurant",
+  "members": [
+    {
+      "name": "Noor",
+      "favourites": [
+        {"name": "Lost in Translation", "domain": "film"},
+        {"name": "Khruangbin", "domain": "band"}
+      ]
+    },
+    {
+      "name": "Owen",
+      "favourites": [
+        {"name": "The Bear", "domain": "show"},
+        {"name": "Dune", "domain": "book"}
+      ]
+    },
+    {
+      "name": "Pia",
+      "favourites": [
+        {"name": "Patagonia", "domain": "brand"},
+        {"name": "Jiro Dreams of Sushi", "domain": "film"}
+      ]
+    },
+    {
+      "name": "Quinn",
+      "favourites": [
+        {"name": "Katz's Delicatessen", "domain": "restaurant"},
+        {"name": "Radiohead", "domain": "band"}
+      ]
+    }
+  ]
+}

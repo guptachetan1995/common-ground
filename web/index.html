@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Common Ground</title>
+<link rel="stylesheet" href="/app.css">
+<script src="/app.js" defer></script>
+</head>
+<body data-page="organiser">
+<a class="skip" href="#main">Skip to the outing</a>
+
+<header class="masthead">
+  <div class="wrap masthead-row">
+    <svg class="mark" viewBox="0 0 56 32" aria-hidden="true" focusable="false">
+      <circle class="mark-a" cx="20" cy="16" r="14"/>
+      <circle class="mark-b" cx="36" cy="16" r="14"/>
+    </svg>
+    <div>
+      <h1>Common Ground</h1>
+      <p class="tagline">Places where nobody in the group is left out.</p>
+    </div>
+  </div>
+</header>
+
+<noscript><p class="wrap banner alert">Common Ground's page needs JavaScript, and it is turned off here.</p></noscript>
+
+<div class="wrap" id="banners" role="status" aria-live="polite"></div>
+<div class="wrap" id="problem" role="alert" hidden></div>
+
+<main class="wrap" id="main" tabindex="-1">
+  <p id="status" class="status" role="status" aria-live="polite"></p>
+
+  <section id="describe" aria-labelledby="h-describe">
+    <h2 id="h-describe" tabindex="-1">Describe the outing</h2>
+    <form id="outing-form" autocomplete="off">
+      <div class="field">
+        <label for="f-label">Name of the outing</label>
+        <input id="f-label" name="label" maxlength="60" required>
+      </div>
+      <div class="field">
+        <label for="f-when">When <span class="optional">(optional, used only in the messages)</span></label>
+        <input id="f-when" name="when" maxlength="40" placeholder="Fri 6 Nov, 7:30 pm">
+      </div>
+      <div class="field">
+        <label for="f-city">City or neighbourhood</label>
+        <input id="f-city" name="place_text" maxlength="60" required aria-describedby="d-city">
+        <p class="hint" id="d-city">Never an address. This text is sent to Qloo.</p>
+      </div>
+      <div class="grid-3">
+        <div class="field">
+          <label for="f-day">Day</label>
+          <select id="f-day" name="day">
+            <option value="monday">Monday</option>
+            <option value="tuesday">Tuesday</option>
+            <option value="wednesday">Wednesday</option>
+            <option value="thursday">Thursday</option>
+            <option value="friday" selected>Friday</option>
+            <option value="saturday">Saturday</option>
+            <option value="sunday">Sunday</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-min">Lowest price level</label>
+          <select id="f-min" name="price_min">
+            <option value="">Any</option><option>1</option><option>2</option><option>3</option><option>4</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-max">Highest price level</label>
+          <select id="f-max" name="price_max">
+            <option value="">Any</option><option>1</option><option>2</option><option>3</option><option>4</option>
+          </select>
+        </div>
+      </div>
+      <p class="hint">Price levels are Qloo's 1 to 4 scale, not an amount of money.</p>
+      <div class="field">
+        <label for="f-kind">Kind of place to look for</label>
+        <input id="f-kind" name="kind_query" maxlength="60" value="restaurant" aria-describedby="d-kind">
+        <p class="hint" id="d-kind">One word. Qloo returns tags that match it, and the organiser chooses one.</p>
+      </div>
+
+      <h3 class="group-title">People</h3>
+      <p class="hint">The first person is the organiser. Two to six people, each with up to three favourites.</p>
+      <div id="people"></div>
+      <div class="actions">
+        <button type="button" id="add-person" class="quiet">Add a person</button>
+      </div>
+
+      <div class="actions primary-actions">
+        <button type="submit" class="primary" id="start">Start the outing</button>
+        <button type="button" id="sample">Try the sample group</button>
+      </div>
+    </form>
+
+    <template id="person-template">
+      <fieldset class="person-fields">
+        <legend><span class="disc" aria-hidden="true"></span><span class="legend-text">Person</span></legend>
+        <div class="field">
+          <label>Name <span class="optional role-note"></span></label>
+          <input class="p-name" maxlength="24" required>
+        </div>
+        <p class="hint public-things">Type the names of public things only (a restaurant, a band, a film, a show, a book, a brand). Each name is sent to Qloo to find a match.</p>
+        <div class="field"><label>Favourite 1</label><input class="p-fav" maxlength="60"></div>
+        <div class="field"><label>Favourite 2</label><input class="p-fav" maxlength="60"></div>
+        <div class="field"><label>Favourite 3</label><input class="p-fav" maxlength="60"></div>
+        <button type="button" class="quiet remove-person">Remove this person</button>
+      </fieldset>
+    </template>
+  </section>
+
+  <section id="summary" aria-labelledby="h-summary" hidden>
+    <h2 id="h-summary" tabindex="-1">The outing</h2>
+    <div id="summary-body"></div>
+    <div id="conditions-body"></div>
+    <div class="actions">
+      <button type="button" id="again" class="quiet">Plan another outing</button>
+    </div>
+  </section>
+
+  <section id="match" aria-labelledby="h-match" hidden>
+    <h2 id="h-match" tabindex="-1">Say which match each person meant</h2>
+    <p class="lede">Qloo proposes candidates for each favourite. A favourite is used only after someone has said which candidate they meant. Each person can do that from their own link, or you can do it for them, and the page records which.</p>
+    <div id="match-list"></div>
+  </section>
+
+  <section id="kind" aria-labelledby="h-kind" hidden>
+    <h2 id="h-kind" tabindex="-1">Choose the kind of place</h2>
+    <div id="kind-body"></div>
+  </section>
+
+  <section id="compare" aria-labelledby="h-compare" hidden>
+    <h2 id="h-compare" tabindex="-1">Compare places</h2>
+    <div id="compare-body"></div>
+    <div id="strip"></div>
+    <div id="results"></div>
+  </section>
+
+  <section id="decide" aria-labelledby="h-decide" hidden>
+    <h2 id="h-decide" tabindex="-1">Pick, draft and sign off</h2>
+    <div id="decide-body"></div>
+  </section>
+
+  <section id="agent" aria-labelledby="h-agent" hidden>
+    <h2 id="h-agent">Point your own agent at it</h2>
+    <p class="lede">This address reaches this workspace only, and whatever calls it is the agent: it can search, compare and draft, and it has no tool for resolving a match, picking a place or signing a message off. Keep it to yourself.</p>
+    <div id="agent-body"></div>
+    <h3 id="h-console">Agent console</h3>
+    <p class="lede">Runs one tool as the agent, from this page, so you can see what it is allowed to do. Try asking it to pick a place: it has no tool for that.</p>
+    <div id="console-body"></div>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p>Common Ground is an independent entry in the Qloo Agentic Hackathon and is not affiliated with or endorsed by Qloo. Workspaces live in memory: a free host stops after 15 minutes without traffic, takes up to a minute to wake, and wakes empty.</p>
+</footer>
+</body>
+</html>

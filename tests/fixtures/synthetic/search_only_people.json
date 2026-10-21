@@ -1,0 +1,10 @@
+{
+  "_label": "Synthetic fixture. Invented names and ids in the reserved range; not Qloo data.",
+  "results": [
+    {
+      "entity_id": "00000000-0000-4000-8000-c00000000004",
+      "name": "Sample Person",
+      "type": "urn:entity:person"
+    }
+  ]
+}

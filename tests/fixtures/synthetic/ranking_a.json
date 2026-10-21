@@ -1,0 +1,122 @@
+{
+  "_label": "Synthetic fixture. Invented names and ids in the reserved range; not Qloo data.",
+  "success": true,
+  "results": {
+    "entities": [
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002000",
+        "name": "Alder Table",
+        "query": {
+          "affinity": 0.95,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.6
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000003",
+                "score": 0.05
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002001",
+        "name": "Brindle Kitchen",
+        "query": {
+          "affinity": 0.85,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.55
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000003",
+                "score": 0.05
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002002",
+        "name": "Cobble Larder",
+        "query": {
+          "affinity": 0.75,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.5
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000003",
+                "score": 0.05
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002003",
+        "name": "Dunmore Supper Club",
+        "query": {
+          "affinity": 0.65,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.45
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000003",
+                "score": 0.05
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002004",
+        "name": "Ember Cantina",
+        "query": {
+          "affinity": 0.55,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.4
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000003",
+                "score": 0.05
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002005",
+        "name": "Fallow Bistro",
+        "query": {
+          "affinity": 0.45,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.35
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000003",
+                "score": 0.05
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

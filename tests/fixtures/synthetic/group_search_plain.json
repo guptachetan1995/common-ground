@@ -1,0 +1,20 @@
+{
+  "_label": "Synthetic fixture. Invented names and ids in the reserved range; not Qloo data.",
+  "success": true,
+  "results": {
+    "entities": [
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002000",
+        "name": "Alder Table"
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002001",
+        "name": "Brindle Kitchen"
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002002",
+        "name": "Cobble Larder"
+      }
+    ]
+  }
+}

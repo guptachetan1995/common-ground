@@ -1,0 +1,254 @@
+{
+  "_label": "Synthetic fixture. Invented names and ids in the reserved range; not Qloo data.",
+  "success": true,
+  "results": {
+    "entities": [
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002000",
+        "name": "Alder Table",
+        "type": "urn:entity:place",
+        "subtype": "urn:entity:place",
+        "tags": [
+          {
+            "id": "urn:tag:synthetic:restaurant",
+            "name": "Restaurant",
+            "type": "urn:tag:synthetic:kind"
+          },
+          {
+            "id": "urn:tag:synthetic:thai",
+            "name": "Thai",
+            "type": "urn:tag:synthetic:cuisine"
+          }
+        ],
+        "properties": {
+          "address": "10 Fern St, Sample City",
+          "website": "https://example.invalid/0"
+        },
+        "query": {
+          "affinity": 0.9,
+          "distance": 120,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000001",
+                "score": 0.5
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.08
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002001",
+        "name": "Brindle Kitchen",
+        "type": "urn:entity:place",
+        "subtype": "urn:entity:place",
+        "tags": [
+          {
+            "id": "urn:tag:synthetic:restaurant",
+            "name": "Restaurant",
+            "type": "urn:tag:synthetic:kind"
+          },
+          {
+            "id": "urn:tag:synthetic:thai",
+            "name": "Thai",
+            "type": "urn:tag:synthetic:cuisine"
+          }
+        ],
+        "properties": {
+          "address": "11 Fern St, Sample City"
+        },
+        "query": {
+          "affinity": 0.85,
+          "distance": 240,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000001",
+                "score": 0.45
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.08
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002002",
+        "name": "Cobble Larder",
+        "type": "urn:entity:place",
+        "subtype": "urn:entity:place",
+        "tags": [
+          {
+            "id": "urn:tag:synthetic:restaurant",
+            "name": "Restaurant",
+            "type": "urn:tag:synthetic:kind"
+          },
+          {
+            "id": "urn:tag:synthetic:thai",
+            "name": "Thai",
+            "type": "urn:tag:synthetic:cuisine"
+          }
+        ],
+        "properties": {
+          "address": "12 Fern St, Sample City",
+          "website": "https://example.invalid/2"
+        },
+        "query": {
+          "affinity": 0.8,
+          "distance": 360,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000001",
+                "score": 0.4
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.08
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002003",
+        "name": "Dunmore Supper Club",
+        "type": "urn:entity:place",
+        "subtype": "urn:entity:place",
+        "tags": [
+          {
+            "id": "urn:tag:synthetic:restaurant",
+            "name": "Restaurant",
+            "type": "urn:tag:synthetic:kind"
+          },
+          {
+            "id": "urn:tag:synthetic:thai",
+            "name": "Thai",
+            "type": "urn:tag:synthetic:cuisine"
+          }
+        ],
+        "properties": {
+          "address": "13 Fern St, Sample City"
+        },
+        "query": {
+          "affinity": 0.75,
+          "distance": 480,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000001",
+                "score": 0.35
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.08
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002004",
+        "name": "Ember Cantina",
+        "type": "urn:entity:place",
+        "subtype": "urn:entity:place",
+        "tags": [
+          {
+            "id": "urn:tag:synthetic:restaurant",
+            "name": "Restaurant",
+            "type": "urn:tag:synthetic:kind"
+          },
+          {
+            "id": "urn:tag:synthetic:thai",
+            "name": "Thai",
+            "type": "urn:tag:synthetic:cuisine"
+          }
+        ],
+        "properties": {
+          "address": "14 Fern St, Sample City",
+          "website": "https://example.invalid/4"
+        },
+        "query": {
+          "affinity": 0.7,
+          "distance": 600,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000001",
+                "score": 0.3
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.08
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entity_id": "00000000-0000-4000-8000-000000002005",
+        "name": "Fallow Bistro",
+        "type": "urn:entity:place",
+        "subtype": "urn:entity:place",
+        "tags": [
+          {
+            "id": "urn:tag:synthetic:restaurant",
+            "name": "Restaurant",
+            "type": "urn:tag:synthetic:kind"
+          },
+          {
+            "id": "urn:tag:synthetic:thai",
+            "name": "Thai",
+            "type": "urn:tag:synthetic:cuisine"
+          }
+        ],
+        "properties": {
+          "address": "15 Fern St, Sample City"
+        },
+        "query": {
+          "affinity": 0.65,
+          "distance": 720,
+          "explainability": {
+            "signal.interests.entities": [
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000001",
+                "score": 0.25
+              },
+              {
+                "entity_id": "00000000-0000-4000-8000-c00000000002",
+                "score": 0.08
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "query": {
+    "locality": {
+      "signal": 1.0
+    },
+    "explainability": {
+      "signal.interests.entities": [
+        {
+          "entity_id": "00000000-0000-4000-8000-c00000000001",
+          "score": 0.5
+        },
+        {
+          "entity_id": "00000000-0000-4000-8000-c00000000002",
+          "score": 0.3
+        },
+        {
+          "entity_id": "00000000-0000-4000-8000-c00000000003",
+          "score": 0.2
+        }
+      ]
+    }
+  }
+}

@@ -260,7 +260,7 @@ the ceiling is spent, a banner says what you are looking at.
 
 ## Who may do what
 
-![The agent console sends pick_place as the agent through the same gateway as the page's buttons and gets not_a_tool: picking is never registered as a tool. Invented sample data.](docs/img/agent-cannot-pick.png)
+![Asked to choose the restaurant, the agent gets not_a_tool back. Choosing belongs to a member of the group, so pick_place was never given to the agent at all. Invented sample data.](docs/img/agent-cannot-pick.png)
 
 **What drives the app.** Plain Python, not a model. A deterministic procedure uses the same tools the page's buttons
 use, all through one `dispatch(tool, args, actor)` function, and writes the reason for every call it makes or skips

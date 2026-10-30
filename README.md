@@ -1,27 +1,40 @@
-# Common Ground
+# Common Ground: one bar per person, no averaged taste
 
 **A group picks where to go. Each person names a few favourites, and an agent asks Qloo where every place
 stands in each person's own ranking. You see one bar per person on every pick, and nobody's taste is averaged
 away. People say which match they meant; only the organiser picks a place or signs off a message.**
 
+![Two common places on the board, each with one bar per person showing that person's own rank among 50, and a tick at the halfway line. Invented sample data; the banner says Qloo is not being called.](docs/img/board.png)
+
 Common Ground is a one-person project: a group-outing planner built on Qloo's taste API as a hackathon entry (theme:
 "Agents, but with taste"; [hackathon page](https://qloo.devpost.com/)). Qloo played no part in building it and has not
 reviewed it, and the project is not affiliated with or endorsed by Qloo.
 
-**Status, 21 October 2026: everything that needs no key is built and tested. It has never spoken to Qloo, and
-no hosted copy exists yet.** It runs on invented data through the command line, a local web page, a hosted-style MCP
-endpoint and a stdio relay to it, behind 674 tests that run offline. No key had arrived when this was written, so no
-response shape has been checked against a real response, and the live source refuses to run until one has. The files
-for two hosts (a free Render web service, or one EC2 instance behind Caddy) are written and tested, and no host has
-been used yet; [docs/deploy.md](docs/deploy.md) is the step-by-step. **Until the first live check has passed, a hosted
-copy serves the sample source, and every page says so.** The package holds the request builders with their parameter
-allowlist, the one module that reads a response shape, the fairness rule, the draft templates, the outing document,
-a source of invented answers, the key-day probe, the live source, the tool registry, the human verbs, the single
-dispatch function, the comparison, the web layer, the MCP endpoint and the relay. The page covers the whole path: the
-board with a bar per person, picking a place, drafts and sign-off, a member's own page with favourites of their own,
-the agent console, and a trace and a call strip. The hackathon's build window closes on 30 October 2026 at 11:45 pm
-Eastern time (31 October, 09:15 IST). [What is not done yet](#what-is-not-done-yet) lists the gaps, and the order of
-work is in [Progress notes](#progress-notes); the sections below describe the finished entry unless they say otherwise.
+## Try it in 60 seconds
+
+You need Python 3.11 or newer and nothing else: no package, no key, no account.
+
+```bash
+python3 -m common_ground serve      # then open http://127.0.0.1:8761/
+```
+
+1. Click **Try the sample group**: four fictional friends, Noor, Owen, Pia and Quinn, with two favourites each.
+2. Click **Resolve Noor's matches**, then the same button for Owen, Pia and Quinn.
+3. Choose **Restaurant**, click **Use this kind**, then **Compare places**. The status line reads "5 places are in the
+   upper half of every ranked person's own ranking. 14 of 30 calls used.", and every card has one bar per person.
+4. Under **Agent console**, click **Ask the agent to pick a place**. The answer is `not_a_tool`, and no pick is
+   recorded: picking is a person's verb, and the agent has no tool for it.
+
+```bash
+python3 -m unittest discover -s tests -t . -q   # 675 tests, offline, about eight seconds
+```
+
+Hosted demo: <!-- hosted-url -->
+
+**Why sample data.** This build went public before Qloo's API key came (it was requested on 17 October), so every
+place, rank and affinity on screen is invented, and the page says so with a banner and a "Sample data" stamp on each
+card. The live path is written: `common_ground probe` checks Qloo's real response shapes once a key exists, and the
+live source refuses every call until it has.
 
 ## Why this exists
 
@@ -38,12 +51,27 @@ So Common Ground never averages. It keeps each person's standing separate and sh
 - **Which condition is doing the harm.** The day or the price band may be what excludes someone. Loosening one
   is a human decision, and the agent has no tool for it.
 
-A language model cannot supply this from memory: it holds no per-person ranking of any place, and it presents a
-guess as agreement. Qloo's taste graph holds the figures, and Common Ground labels each one with where it came
-from.
-
 It never contacts anyone. An invitation or a booking request goes out in your name, so only you can release it,
 and the app only drafts it.
+
+## Why not average, swipe or ask a language model
+
+The usual ways of choosing for a group each hide the person who loses.
+
+- **Swipe and match.** Apps of this kind put the same places in front of everyone and call it a match when all of
+  them say yes. They find agreement only among places someone has already listed, each person has to judge every
+  card, and what a person loves outside restaurants (a film, a band) plays no part.
+- **Blend everyone's signal.** Group recommenders that merge the members' tastes return one score per place for the
+  group. A high group score can hide the one person a place fails, and a single number cannot say who that is.
+- **Ask a language model.** It names places from memory. It holds no per-person ranking of any place, so it presents
+  a guess as agreement.
+
+Common Ground asks Qloo for a separate ranking per person over one shared candidate list: the group search returns
+up to 50 places, and each person's own favourites rank those same places. Common places are ordered by the rank of
+the person each one serves least, which is the least-misery strategy from group-recommender research (Masthoff,
+2004), applied to ranks rather than ratings. "No place is shared by everyone" is a real answer, shown in those
+words, rather than a weaker place presented as agreement. Qloo's taste graph holds the figures, and every one of
+them on a card is labelled with where it came from.
 
 ## What happens when you use it
 
@@ -78,6 +106,8 @@ and the app only drafts it.
 The page is one flow, top to bottom: describe the outing, say which match each person meant, choose the kind of
 place, compare, pick, draft, sign off. Each step reveals the next, and the status line under the heading says in
 words what just happened.
+
+![The same sample group asked in Los Angeles at price level 2: no place is in everyone's upper half, and each closest place names who it leaves out. Invented sample data.](docs/img/no-place-shared.png)
 
 - **A card per place.** Each person has a row: a coloured initial, the name, "ranks it 4 of 50", and a bar. The bar
   is as long as that person ranks the place high, so the top of their list fills it and the bottom leaves a sliver.
@@ -215,11 +245,11 @@ GET https://hackathon.api.qloo.com/v2/insights
   response): "Owen: ranks it 4 of 50 in his own ranking (this app counts Qloo's order) · affinity 0.71 on his own
   scale, Qloo's band High (Qloo's figures) · explained by his film, 0.42 (Qloo's explainability)".
 
-The field names above are the ones Qloo's documentation shows. A first live run, before anything is built on it,
-compares them with real responses, and this section is then updated with what was confirmed. Every shape the app
-reads, the pass marks the first run is judged by, and what is still unmeasured are listed in
-[docs/api-notes.md](docs/api-notes.md). If Qloo cannot rank the
-whole long list for one person in a single request, the entry stops, because any substitute would be weaker.
+The field names above are the ones Qloo's documentation shows, and no real response has been read yet. The key-day
+probe compares them with real responses, and the live source refuses to run until it has. Every shape the app reads,
+the pass marks the probe is judged by, and what is still unmeasured are listed in
+[docs/api-notes.md](docs/api-notes.md). If Qloo cannot rank the whole long list for one person in a single request,
+the probe writes no settings and the live source stays off, because any substitute would be weaker.
 
 **Spending.** Live calls are counted per outing. The default limit is 30, which covers the largest outing (six
 people with three favourites each, 26 calls); only you can lift it, to at most 60. Answers are cached privately on
@@ -229,6 +259,8 @@ server and is not a calendar day; Qloo's quota is the durable limit. Nothing deg
 the ceiling is spent, a banner says what you are looking at.
 
 ## Who may do what
+
+![The agent console sends pick_place as the agent through the same gateway as the page's buttons and gets not_a_tool: picking is never registered as a tool. Invented sample data.](docs/img/agent-cannot-pick.png)
 
 **What drives the app.** Plain Python, not a model. A deterministic procedure uses the same tools the page's buttons
 use, all through one `dispatch(tool, args, actor)` function, and writes the reason for every call it makes or skips
@@ -365,49 +397,6 @@ text and border pair in both and fails below 4.5:1 for text and 3:1 for borders 
 turned off under `prefers-reduced-motion`, targets are 44 px, and the page has no horizontal scroll down to 375 px.
 It loads nothing from another host and holds no inline script or style, which its content security policy enforces.
 
-## Limits of the evidence
-
-- It cannot say the best place for your group was found. Only the places in the long list (the group search's
-  first 50) are ranked; a place outside the long list is never checked. Ranks are also relative, so a common
-  place can still carry a Low band for someone, which is why the band sits next to the bar.
-- It cannot say anyone will like a place. Qloo's figures describe how its audiences relate to the things a person
-  named. They are not a prediction about that person, and no card turns them into a rating of one.
-- It cannot say a place is open at a given time, has room for your group, or what it costs. Qloo's day filter is a
-  day of the week and its price level is a 1 to 4 band; a booking request asks the place.
-- It cannot say anything about a favourite Qloo has no data for; the card says "nothing known".
-- It cannot tell you who to write to. Qloo holds no contact details; you add the recipient.
-- It cannot guarantee a common place exists. For six people, chance alone makes one unlikely, and the page says so.
-
-## What is not done yet
-
-- **No live calibration.** The app has never called Qloo. Every response shape it reads is the documentation's, the
-  readers are tested on invented fixtures shaped like it, and the live source refuses to run until the key-day probe has
-  checked real responses. What the probe decides is in [docs/api-notes.md](docs/api-notes.md).
-- **No hosted copy yet.** The files for it are written and tested, not used. A hosted copy serves the sample source,
-  with a banner and a "Sample data" stamp, until the probe has passed and the host has been switched to `live`.
-- **No real MCP client session.** The hosted endpoint and the stdio relay are tested with scripted clients only.
-- **The cold start is unmeasured.** The free host's wake-up takes about a minute by its own account, and the first
-  sample run after it repeats its calls; how long that run takes there has not been timed.
-- **One browser, one machine.** The walks below used a Chromium-based browser. Firefox, Safari, a physical phone and a
-  screen reader were not tried.
-
-## Claims we decline to make
-
-- No language model runs inside the app.
-- Nothing is shown as booked, reserved or confirmed by a place.
-- "Common" means the upper half of each person's own ranking of the long list, as Qloo orders it, under this
-  app's rule. It does not mean agreement.
-- "A person's own click" is claimed only where the person used their own link; otherwise the page says the
-  organiser resolved the match on their behalf.
-- The group, the outing and the people are fictional. The things they love are real public things that Qloo
-  resolves, shown only through what Qloo returns.
-
-## Roadmap
-
-- A day-trip mode using Qloo's destination type.
-- A "not tonight" tag each person can set, applied as an exclusion by the organiser.
-- Qloo's analysis endpoint, to show what two people's favourites have in common.
-
 ## Run it yourself
 
 No package needs installing, only Python 3.11 or newer. Every command below exists today and has to pass from a
@@ -480,8 +469,66 @@ installs anything when the provider is live and the key line is empty, pins Cadd
 certificate). Both start on `COMMON_GROUND_PROVIDER=fake`, the sample source, because a live server refuses every call
 until the probe has checked Qloo's response shapes; switching to `live` is one variable on Render and a new instance on
 EC2. `tests/test_host_files.py` reads both files against the server's settings and its `serve` command, starts the
-server the way Render does, and runs the boot script against stubs. Nothing has been deployed, so what only a real
-sitting can show is listed under "Not verified" in the guide.
+server the way Render does, and runs the boot script against stubs. What only a real deploy can show is listed under
+"Not verified" in the guide.
+
+## Limits
+
+### What the evidence cannot say
+
+- It cannot say the best place for your group was found. Only the places in the long list (the group search's
+  first 50) are ranked; a place outside the long list is never checked. Ranks are also relative, so a common
+  place can still carry a Low band for someone, which is why the band sits next to the bar.
+- It cannot say anyone will like a place. Qloo's figures describe how its audiences relate to the things a person
+  named. They are not a prediction about that person, and no card turns them into a rating of one.
+- It cannot say a place is open at a given time, has room for your group, or what it costs. Qloo's day filter is a
+  day of the week and its price level is a 1 to 4 band; a booking request asks the place.
+- It cannot say anything about a favourite Qloo has no data for; the card says "nothing known".
+- It cannot tell you who to write to. Qloo holds no contact details; you add the recipient.
+- It cannot guarantee a common place exists. For six people, chance alone makes one unlikely, and the page says so.
+
+### Not done yet
+
+- **No live calibration.** The app has never called Qloo. Every response shape it reads is the documentation's, the
+  readers are tested on invented fixtures shaped like it, and the live source refuses to run until the key-day probe has
+  checked real responses. What the probe decides is in [docs/api-notes.md](docs/api-notes.md).
+- **No real MCP client session.** The hosted endpoint and the stdio relay are tested with scripted clients only.
+- **The cold start is unmeasured.** The free host's wake-up takes about a minute by its own account, and the first
+  sample run after it repeats its calls; how long that run takes there has not been timed.
+- **One browser, one machine.** The walks below used a Chromium-based browser. Firefox, Safari, a physical phone and a
+  screen reader were not tried.
+
+### Claims we decline to make
+
+- No language model runs inside the app.
+- Nothing is shown as booked, reserved or confirmed by a place.
+- "Common" means the upper half of each person's own ranking of the long list, as Qloo orders it, under this
+  app's rule. It does not mean agreement.
+- "A person's own click" is claimed only where the person used their own link; otherwise the page says the
+  organiser resolved the match on their behalf.
+- The group, the outing and the people are fictional. The things they love are real public things that Qloo
+  resolves, shown only through what Qloo returns.
+
+## Roadmap
+
+- A day-trip mode using Qloo's destination type.
+- A "not tonight" tag each person can set, applied as an exclusion by the organiser.
+- Qloo's analysis endpoint, to show what two people's favourites have in common.
+
+**Who would pay.**
+
+- **Venue, reservation and ticketing platforms.** A group holding concert tickets still needs somewhere to eat before
+  the show. The platform knows who is going and on which night, and a short list that shows each person's standing is
+  a reason for the group to book through it.
+- **Team dinners and offsites.** The organiser answers to everyone and must not leave anyone out. A bar per person,
+  and "no place is shared by everyone" when that is the truth, is what they can show the team.
+- **Any assistant, over MCP.** The hosted endpoint already serves the eight tools, so an assistant asked to plan a
+  group evening can call them, and it still has no tool to pick a place or sign a message off.
+
+**What one group costs**, in Qloo calls, as the code counts them: one search per favourite, one tag search, one group
+search and one ranking per person. Four people with two favourites each come to at most 14 calls (8, 1, 1 and 4); six
+people with three each, the largest outing, to at most 26. The comparison spends fewer rankings when it can already
+tell that no place is shared by everyone, and answers are cached privately on the server for 24 hours.
 
 ## Progress notes
 
@@ -495,8 +542,7 @@ Each row gets its real date as the work lands.
 | 21 Oct | The server, the page and the hosted MCP endpoint, on the synthetic source: the guards and limits of the route table, both MCP eras on one path, the outing form, each person's matches (the organiser's click recorded and labelled, or the person's own link), the kind of place, the comparison and its cards | Done |
 | 21 Oct | The board with a bar per person, picking, drafts and sign-off, a member's own favourites, the agent console, the trace and call strip, every banner and state, the accessibility pass, and a sample source for new outings once the day's live calls are spent, all on the synthetic source | Done |
 | 21 Oct | The stdio relay, the deploy files for Render and for EC2 with Caddy, `docs/deploy.md`, and the tests that tie them to the server's settings and start command | Done |
-| 25 Oct | The hosting sitting and the hosted demo (retry on 27 Oct) | Planned |
-| 25 – 28 Oct | The key-day probe when a key exists, then live checks against Qloo, the final copy | Planned, conditional on the key |
+| 30 Oct | The README and the submission copy reworked after an independent review: the product first, then the status | Done |
 
 ### What the browser walk showed (21 Oct, on the synthetic source)
 

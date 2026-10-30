@@ -1,60 +1,40 @@
 # Devpost submission copy — Common Ground
 
 Field-by-field text for the Common Ground entry. The hackathon, "Agents, but with taste", is run by Qloo on
-[Devpost](https://qloo.devpost.com/); entries close Oct 30, 2026 at 11:45 pm EDT (Sat 31 Oct, 09:15 IST), and this one
-is due two days early, on Wed 28 Oct.
-
-**Status, 21 Oct 2026: the app is built and tested, it has never spoken to Qloo, and no hosted copy exists yet.** The
-package holds the command line, the web page, a hosted-style MCP endpoint and a stdio relay to it, behind 674 offline
-tests. No Qloo key had arrived when this was written, so every place and every figure in any demo today is invented
-sample data, and the live source refuses to run until a first live check has compared Qloo's real response shapes
-with the documented ones (the key-day probe). Files for two hosts are written and tested; the owner's hosting sitting is Sun 25 Oct, with
-Tue 27 Oct as the retry. This file therefore separates what is true now from what becomes true only if something
-happens, and marks the second kind **CONDITIONAL**.
+[Devpost](https://qloo.devpost.com/); entries close Fri 30 Oct 2026 at 11:45 pm EDT (Sat 31 Oct, 09:15 IST).
 
 How to read this file:
 
-- Each Devpost form field has its copy below, followed by the rules those fields answer and a split of the work.
-- A sentence about behaviour is backed by a test or by a step of the demo path. Where it is not backed yet, it says
-  CONDITIONAL, and the table in the next section gives the wording that stands until then.
-- A value that cannot exist yet (an address, a measured figure) says **pending** and names what will supply it.
-- The form's real field list is read once the project exists, and this file is then brought into line.
-- Links are absolute because Devpost cannot follow relative ones; an address that does not exist yet stays plain text.
+- Each Devpost form field has its copy below, pasted as written. The sections after "Testing instructions" say where
+  each rule and judging criterion is answered, and are not pasted.
+- The Rules want the description to cover what the project does and how it works, and the overview adds that it
+  should say what makes the project "Qloo-powered". "About the project" does both.
+- A sentence about behaviour is backed by a test or by a step of the demo path.
+- An HTML comment named hosted-url marks where the hosted demo's address goes once it is deployed, and one named
+  video-url the optional video's YouTube link.
+- Links are absolute because Devpost cannot follow relative ones.
 - The hackathon wants a hosted demo, a public repository and a written description. It does not want a video.
-
-## What is conditional
-
-| Statement | Becomes true when | Wording that stands until then |
-|---|---|---|
-| The hosted demo makes live Qloo calls | The first live check (the probe) has passed, its block is in `common_ground/measured.py`, the repository is republished and the host is switched to `live` | "Today's demo runs on invented sample data; the banner on every page says so and each card carries a Sample data stamp." |
-| Figures were calibrated on real responses (affinity range, ids a ranking accepts, which filters Qloo honours) | `docs/api-notes.md` holds the probe's measured values | "Live calibration has not been done." |
-| A real MCP client session drives the hosted endpoint | A Claude session is recorded and its frames are checked for the address and token | "No real client session has been recorded; the endpoint and the relay are tested with scripted clients." |
-| A video | It is made, at most 2:00, and uploaded as Public | No video. |
-| The first sample run takes N seconds after a cold start | It is timed on the host | pending |
-| A hosted address and a public repository link | The host exists; the repository is published | pending |
-
-Elevator pitch for the live state, used only once the first row is true (194 characters): *Four friends, four tastes.
-An agent asks Qloo where every place ranks for each person's own favourites, shows each person's standing as evidence
-and drafts the invite. Only people pick and sign.*
 
 ## Project name
 
-Common Ground
+Common Ground: one bar per person, no averaged taste
 
 ## Elevator pitch
 
-At most 200 characters. This one is 193:
+At most 200 characters. This one is 189:
 
-> Four friends, four tastes. An agent built on Qloo's taste API ranks places per person, shows each one's standing and drafts the invite. Today's demo uses sample data. Only people pick and sign.
+> Four friends, four tastes, one table. An agent asks Qloo to rank the same places for each person, puts one bar per person on every pick and drafts the invite. Only people pick and sign off.
 
 ## About the project
 
-The Rules want the description to cover what the project does and how it works, and the overview adds that it should
-say what makes the project "Qloo-powered".
+**Try it:** open <!-- hosted-url -->, press **Try the sample group**, resolve each person's matches, choose
+**Restaurant**, press **Compare places** and open a card. Then, under **Agent console**, press **Ask the agent to pick
+a place**: the answer is `not_a_tool`, because picking is a person's verb and the agent has no tool for it.
 
-**Quick path:** open the hosted demo (pending: its address is known after the 25 Oct sitting), press **Try the sample
-group**, resolve each person's matches, press **Compare places**, and open a card. On sample data the banner reads
-"Synthetic sample data. Qloo is not being called." and each card carries a "Sample data" stamp.
+**Why sample data.** This build went public before Qloo's API key came (it was requested on 17 October), so every
+place, rank and affinity in the demo is invented. The banner reads "Synthetic sample data. Qloo is not being called."
+and each card carries a "Sample data" stamp. The live path is written: `common_ground probe` checks Qloo's real
+response shapes once a key exists, and the live source refuses every call until it has.
 
 ### Inspiration
 
@@ -63,9 +43,16 @@ endings are the loudest voice winning, a list averaged until nobody is delighted
 lost. A fair answer needs a standing for each person on each candidate, so anyone left out can be seen, and it needs
 the freedom to say "no place works for all of us" instead of faking one.
 
-A language model could not do this from memory: it has no per-person ranking for any place, and it would call a guess
-agreement. Qloo's taste graph does rank places for a person, and it crosses domains, so someone's film or band can be
-what finds them a place: "the thing that only works because it knows what people love".
+**Why not average, swipe or ask a language model.** Swipe-and-match apps find agreement only among places someone has
+already listed, and each person has to judge every card. Group recommenders that blend everyone's signal return one
+score per place, and a high group score can hide the one person a place fails. A language model names places from
+memory: it holds no per-person ranking of any place, and it would call a guess agreement. Common Ground asks Qloo for
+a separate ranking per person over one shared candidate list, orders the common places by the person each one serves
+least (the least-misery strategy from group-recommender research, Masthoff 2004, applied to ranks), and treats "no
+place is shared by everyone" as a real answer.
+
+Qloo's taste graph is what makes a ranking per person possible, and it crosses domains, so someone's film or band can
+be what finds them a place: "the thing that only works because it knows what people love".
 
 An invitation or a booking request leaves in the organiser's name and cannot be recalled. Common Ground therefore
 drafts and never sends, and the decisions that matter are ones no agent has a tool for.
@@ -106,14 +93,12 @@ likely a common place is by chance for a group of that size.
 The app contains no language model, by choice. Its agent is a rule-based comparison: each step applies a rule to a Qloo
 response, and the README lists the rules. The tool registry is also exposed over the Model Context Protocol, as a
 hosted Streamable HTTP endpoint (revision 2026-07-28, plus the two earlier ones that open with `initialize`) and as a
-stdio relay to it, so any tool-calling model can operate it and none can commit. **CONDITIONAL:** a recorded Claude
-(Anthropic) session in Claude Code will show this; none exists yet.
+stdio relay to it, so any tool-calling model can operate it and none can commit. Both are tested with scripted MCP
+clients.
 
 Qloo is reached through three endpoints: `/search` (a favourite becomes an entity a person resolves), `/v2/tags` (a
 valid tag for the kind of place) and `/v2/insights` for places, used twice over. Requests are built from a
-per-endpoint list of allowed parameters, and the key travels only in the `X-Api-Key` header, from the server. **Every
-response shape the app reads is the documentation's and has not met a real response;** the live source refuses to run
-until the probe has checked them.
+per-endpoint list of allowed parameters, and the key travels only in the `X-Api-Key` header, from the server.
 
 **A request traced end to end, ids elided.** For the sample group, one `GET /v2/insights` carries
 `filter.type=urn:entity:place`, `signal.interests.entities` set to the eight favourites four people resolved,
@@ -131,9 +116,8 @@ person's own ranking, with a tie tolerance at the line. Qloo's guide says scores
 read by position; it says this about brands, and extending it to people is our inference, which the README states.
 
 Behind the page's buttons, the member page, the command line, the agent console and the MCP endpoint (and the relay,
-through it) is a single function, `dispatch(tool, args, actor)`. The server needs only Python 3, so judges install nothing. In line with
-the developer guide, the repository holds no Qloo response data; tests and keyless mode use made-up data that each page
-labels as such. Claude Code wrote the code.
+through it) is a single function, `dispatch(tool, args, actor)`. The server needs only Python 3, so judges install
+nothing. Claude Code wrote the code.
 
 ### What we measured, and on what
 
@@ -145,14 +129,9 @@ All of these were measured on the invented sample source, not on Qloo.
   ranking was not spent.
 - **What the page showed for the sample group.** 5 common places and 3 near ones, each near one naming who it leaves
   out, and the line "unrelated rankings would share about 3.1 of 50; this group shares 5".
-- **Group size.** If rankings were unrelated, a place would sit in all the upper halves with probability one half to the
-  power of the group's size: about 12.5 common places of 50 for two people, 6.3 for three, 3.1 for four, 1.6 for five
-  and 0.8 for six. Real rankings are related, so the real count should be higher.
 - **Size and checks.** About 4,900 lines of Python with no third-party package, 2,200 lines of page files, and
-  674 tests that run offline in about eight seconds, among them HTTP tests over a real socket, a test that fails if a
+  675 tests that run offline in about eight seconds, among them HTTP tests over a real socket, a test that fails if a
   Qloo-shaped id appears in the tree, and one that computes the contrast of every colour pair in light and dark.
-- **Cold start.** pending: timed on the host at the deploy walk (the free host stops after 15 minutes without traffic
-  and the next visit waits about a minute).
 
 ### Challenges we ran into
 
@@ -160,9 +139,6 @@ All of these were measured on the invented sample source, not on Qloo.
   allowlist, enforced when a request is built, so a typo cannot silently turn a condition off.
 - **"No place comes close" cannot happen with complete rankings.** Some place always leaves out at most half the
   people, so it is common or near. The page says "no place comes close" only when Qloo ranked part of the long list.
-- **The early stop needs a gap to fire on.** With smooth affinities, as the invented source has and Qloo's probably do,
-  the tie tolerance makes two halves overlap, so a comparison can wait for the third ranking. The test uses a source
-  whose affinities jump at the line, and the copy says "it stops when the answer is known", not "it stops early".
 - **Invented data must never stand in for a live answer.** After the daily ceiling a visitor should not meet a dead end,
   yet sample data must not pass for Qloo's. An outing keeps the source it opened on: one opened live stops with a named
   reason, and a new outing runs on sample data under its own banner and stamp.
@@ -175,7 +151,6 @@ All of these were measured on the invented sample source, not on Qloo.
 - "No common ground" is a result with its own screen, and the effect of group size is printed beside every result.
 - A card says whose every figure is, and where the organiser resolved a match on someone's behalf.
 - The flow was walked by keyboard alone at 375 px, in light and dark, in one Chromium-based browser.
-- No third-party package, and a tree that holds no Qloo data and no key, which a test and the verification script check.
 
 ### What we learned
 
@@ -183,14 +158,11 @@ All of these were measured on the invented sample source, not on Qloo.
   the part we had to infer.
 - Withholding a tool is stronger than asking an agent to hold back.
 - The person gate depends on a label browsers add only to HTTPS pages, so the choice of host shaped the product.
-- Keeping every response-shape assumption in one module let the build go on without a key; nothing in it is calibrated
-  until real responses have been read.
 
-### What is not done yet
+### Known limits
 
-- **No live calibration.** The app has never called Qloo. The live source refuses to run until the first check passes.
+- **No live calibration.** No Qloo key reached this build, so no response shape has met a real response.
 - **No real client session.** The MCP endpoint and the relay are tested with scripted clients only.
-- **The hosted demo runs on sample data until the first live check has passed,** and its cold-start time is unmeasured.
 - **One browser.** The walks used a Chromium-based browser; Firefox, Safari, a phone and a screen reader were not tried.
 
 ### What's next for Common Ground
@@ -198,6 +170,14 @@ All of these were measured on the invented sample source, not on Qloo.
 - A day-trip mode using Qloo's destination type.
 - A "not tonight" tag each person can set, which the organiser applies as an exclusion.
 - Qloo's analysis endpoint, to show what two people's favourites have in common.
+
+**Who would pay.** Venue, reservation and ticketing platforms: a group holding concert tickets still needs somewhere
+to eat before the show, and a short list that shows each person's standing is a reason to book it where the tickets
+were bought. Team dinners and offsites, where the organiser answers to everyone and must not leave anyone out. And any
+assistant, over MCP: the hosted endpoint already serves the eight tools, so an assistant asked to plan a group evening
+can call them and still cannot pick a place or sign a message off. One group costs at most 14 Qloo calls for four
+people with two favourites each, and 26 for the largest outing (one search per favourite, one tag search, one group
+search, one ranking per person).
 
 ## Built with
 
@@ -207,25 +187,27 @@ Tags to paste: python, html, css, javascript, model-context-protocol, qloo, rend
 - The page is plain HTML, CSS and JavaScript
 - The hosted agent endpoint and a stdio relay speak the Model Context Protocol
 - Qloo supplies search, tags and insights
-- Render hosts it for free (pending: amazon-ec2 and caddy instead, if the 25 Oct sitting picks EC2)
+- Render serves the hosted demo on a free web service
+
+If the demo is served from EC2 behind Caddy instead, swap the `render` tag for `amazon-ec2` and `caddy`.
 
 ## Try it out links
 
-- Hosted demo: its address (pending; it exists after the 25 Oct sitting, and it runs on sample data until the first
-  live check has passed).
-- Source: `github.com/guptachetan1995/common-ground` (pending; published before the sitting).
+- Hosted demo: <!-- hosted-url -->
+- Source: https://github.com/guptachetan1995/common-ground
 
 ## Video demo link
 
-None, unless the optional video gets made (pending; decided 27 Oct, and CONDITIONAL on the hosted demo being green by
-then). The Rules do not ask for one.
+<!-- video-url -->
+
+The optional video's YouTube link, uploaded as Public. The Rules do not ask for a video, so the field stays empty
+without one.
 
 ## Gallery plan
 
-Each gallery picture is a screenshot of the hosted app. While the app runs on sample data every picture keeps the banner
-and the "Sample data" stamp in frame and is captioned as sample data; nothing in the gallery is presented as a Qloo
-result unless it was taken on live data. Keys, cookies, agent addresses and member links are kept off screen, Qloo's logo
-is not used, and wherever Qloo data appears it is on this page only, never in the repository.
+Each gallery picture is a screenshot of the hosted app on its sample source. Every picture keeps the banner and the
+"Sample data" stamp in frame and is captioned as sample data; nothing in the gallery is presented as a Qloo result.
+Keys, cookies, agent addresses and member links are kept off screen, and Qloo's logo is not used.
 
 1. **Thumbnail (3:2):** the picks, with a bar per person on each card.
 2. **Saying which match is meant:** the agent's candidate for each favourite, and the resolve click.
@@ -238,11 +220,10 @@ is not used, and wherever Qloo data appears it is on this page only, never in th
 
 ## Answers to the hackathon-specific fields
 
-The live form is checked later; the planned answers are:
+The live form's own field list decides the final set; the answers are:
 
-- Demo: the hosted address (pending, after the 25 Oct sitting).
-- Repository: `github.com/guptachetan1995/common-ground`, public, with the MIT licence shown in About (pending until
-  it is published).
+- Demo: <!-- hosted-url -->
+- Repository: https://github.com/guptachetan1995/common-ground, public, with the MIT licence shown in About.
 - Platform: web; any current browser on a phone or a desktop.
 - Testing instructions: see the next section.
 - Newness: this is a new project. Planning notes are dated 20 Oct, and every line of application code is written from
@@ -252,18 +233,18 @@ The live form is checked later; the planned answers are:
 
 The Rules require access "free of charge and without any restriction". Common Ground is a web app, so:
 
-1. **Nothing to sign in to, supply or install.** Open the demo address in a current Chrome, Firefox or Safari. The
-   banner at the top says which source you are looking at: while the demo runs on sample data it reads "Synthetic
-   sample data. Qloo is not being called.", every figure is invented, and each card carries a "Sample data" stamp. The
-   free host stops its program after 15 minutes without traffic. After a quiet spell the first load takes about a minute
-   (Render shows its own loading page meanwhile) and the app comes back empty: earlier workspaces, personal links and
-   agent addresses no longer exist, a tab left open says "This workspace is gone", and the first sample run repeats its
-   calls, so it is slower than later ones. If the page is loaded over plain HTTP, or the browser sends no request label
-   (older than 2023, or behind a proxy or privacy tool that strips it), a banner appears and resolving, picking and
-   signing off are disabled, because the page tells you apart from an agent by that label; the agent console and an MCP
-   client still work. Press **Try the sample group** and follow the README's path: resolve each person's matches,
-   compare places, open a card, pick a place, draft and sign off both messages, then ask the agent console to pick a
-   place: `not_a_tool`. In a text box, Enter presses the button beside it.
+1. **Nothing to sign in to, supply or install.** Open <!-- hosted-url --> in a current Chrome, Firefox or Safari. The
+   banner at the top says which source you are looking at. This build runs its sample source, so the banner reads
+   "Synthetic sample data. Qloo is not being called.", every figure is invented, and each card carries a "Sample data"
+   stamp. The free host stops its program after 15 minutes without traffic. After a quiet spell the first load takes
+   about a minute (Render shows its own loading page meanwhile) and the app comes back empty: earlier workspaces,
+   personal links and agent addresses no longer exist, a tab left open says "This workspace is gone", and the first
+   sample run repeats its calls, so it is slower than later ones. If the page is loaded over plain HTTP, or the browser
+   sends no request label (older than 2023, or behind a proxy or privacy tool that strips it), a banner appears and
+   resolving, picking and signing off are disabled, because the page tells you apart from an agent by that label; the
+   agent console and an MCP client still work. Press **Try the sample group** and follow the README's path: resolve
+   each person's matches, compare places, open a card, pick a place, draft and sign off both messages, then ask the
+   agent console to pick a place: `not_a_tool`. In a text box, Enter presses the button beside it.
 
 2. **What the demo spends.** On live data it makes Qloo calls from the server; on sample data it makes none. Each outing
    has a call limit (30 by default; the lift-limit button raises it to 60) and the server has a daily ceiling that
@@ -280,24 +261,24 @@ The Rules require access "free of charge and without any restriction". Common Gr
    against the hackathon base URL, and the live source refuses to run until `common_ground probe` has checked Qloo's
    response shapes.
 
-5. **Tests:** `python3 -m unittest discover -s tests -t . -q`, offline.
+5. **Tests:** `python3 -m unittest discover -s tests -t . -q` runs 675 tests offline in about eight seconds.
 
 6. **Bring your own agent (optional):** the page shows an agent address. An MCP client that speaks Streamable HTTP can
    use `<agent address>/mcp` (Claude Code: `claude mcp add --transport http common-ground <agent address>/mcp`); a
    stdio-only client can run `python3 -m common_ground mcp --address <agent address>` from a clone. The human verbs are
    missing from the tool list, and requesting one returns `not_a_tool`.
 
-The demo is planned to stay up through at least 18 Nov 2026, which is two days after judging ends. If Qloo refuses the
-key, the page says so instead of showing anything in its place.
+The demo stays up through at least 18 Nov 2026, two days after judging ends. If Qloo refuses a key, the page says so
+instead of showing anything in its place.
 
 ## If a video is made: its YouTube details
 
-Only if the optional video is made; the agent sends these with the file.
+For the optional video; the agent sends these with the file.
 
 - **Visibility:** Public. The Rules say nothing about it, and Public rules out any access problem.
 - **Category:** Science & Technology
 - **Tags:** qloo, taste graph, ai agent, mcp, group planning, hackathon
-- **Title:** Common Ground: an agent looking for the places no one in a group is left out of (Qloo Agentic Hackathon)
+- **Title:** Common Ground: one bar per person, no averaged taste (Qloo Agentic Hackathon)
 - **Description:** the pitch above, then the demo and repository links, then a line saying it is an independent entry,
   not affiliated with or endorsed by Qloo, with a fictional group; it also names the Qloo endpoints used (search, tags,
   insights), and says whether the film shows sample data or live data.
@@ -306,16 +287,19 @@ Only if the optional video is made; the agent sends these with the file.
 
 - **Technological Implementation.** Read the README's "What Qloo contributes" and "The fairness rule". On the demo
   page: the trace, the call strip, and the calls spent and saved. Behind it: the parameter allowlist, the limits, the
-  allowance, the ceiling and the gate tests. CONDITIONAL on live data: how the code fares against real responses is
-  not yet known.
+  allowance, the ceiling and the gate tests. Not shown: how the code fares against real Qloo responses, because no key
+  reached this build.
 - **Design.** One flow, from the outing to a signed-off message, in which every state can be reached: no key, an
   ambiguous favourite, nothing found, no common ground, a call limit reached, a spent ceiling, a Qloo error, a sleeping
   host. The page works at phone width, by keyboard, and passes a contrast test.
-- **Potential Impact.** [What it does](#what-it-does), run on live data once the first live check has passed. The
-  irreversible step, a message in the organiser's name, stays with the human.
-- **Quality of the Idea.** A film or a band finds a place; each pick shows a standing per person instead of an average;
-  "no common ground" is a legitimate answer; only a human changes a condition; and the human gates follow Qloo's own
-  guidance.
+- **Potential Impact.** [What it does](#what-it-does), and who would pay for it
+  ([What's next](#whats-next-for-common-ground)): reservation and ticketing platforms, team organisers, and any
+  assistant over MCP, at no more than 14 Qloo calls for a group of four. The irreversible step, a message in the
+  organiser's name, stays with the human.
+- **Quality of the Idea.** A film or a band finds a place; each pick shows a standing per person instead of an average,
+  and picks are ordered by the person served least (least misery), which neither a swipe app nor a blended group score
+  shows; "no common ground" is a legitimate answer; only a human changes a condition; and the human gates follow Qloo's
+  own guidance.
 
 ## Claims we decline to make
 
@@ -347,11 +331,11 @@ Only if the optional video is made; the agent sends these with the file.
 ## Rule-by-rule answers
 
 **Deliverables.** The agentic-tool requirement is met by three Qloo endpoints behind an MCP-connectable tool registry
-and a comparison ([What it does](#what-it-does)). The demo is to be hosted and public with no login, so a judge can try
-it end to end ([Try it out links](#try-it-out-links), [Testing instructions](#testing-instructions)); until the first
-live check has passed it shows sample data and says so. The repository is public and the MIT licence sits at its root,
-where About will show it. The description is [About the project](#about-the-project), and the case that Qloo is the
-differentiator is [Inspiration](#inspiration): without Qloo there is no catalogue of places and no ranking per person.
+and a comparison ([What it does](#what-it-does)). The demo is hosted and public with no login, so a judge can try it
+end to end ([Try it out links](#try-it-out-links), [Testing instructions](#testing-instructions)); it shows sample data
+and says so. The repository is public and the MIT licence sits at its root, where About shows it. The description is
+[About the project](#about-the-project), and the case that Qloo is the differentiator is [Inspiration](#inspiration):
+without Qloo there is no catalogue of places and no ranking per person.
 
 **Conditions.** Access is free and unrestricted until judging ends; the limits are stated abuse guards
 ([Testing instructions](#testing-instructions)). Everything is in English. The project is new, not updated
@@ -361,22 +345,5 @@ optional.
 **Qloo's own submission guide** asks for a problem statement, the Qloo workflow and why, a redacted request to result,
 a demo or screenshots without credentials, setup steps, and known limitations. They are in [Inspiration](#inspiration),
 [How we built it](#how-we-built-it) (the request traced end to end), the gallery, [Testing
-instructions](#testing-instructions) and [Claims we decline to make](#claims-we-decline-to-make), and [What is not done
-yet](#what-is-not-done-yet) lists the known limitations.
-
-## Division of labour before submitting
-
-Before the Submit click, the agent does everything except the owner's three acts, working in the owner's logged-in
-Chrome. It builds, tests and publishes the app and its repository, then walks the live address logged out. It reads the
-live form and updates this file to fit, creates the project from the owner's registration and fills every field
-(gallery, thumbnail, tags and links included) while leaving the agreement boxes alone, and turns the placeholders above
-into real addresses. It then runs the judge-panel review, acts on it, and checks each rule against the draft, the demo
-and the repository.
-
-The owner's three acts:
-1. Click **Create Web Service** for this entry's service in the existing Render workspace during the Sunday 25 Oct
-   hosting sitting, pasting the API key as the service's secret only if the first live check has passed (otherwise the
-   service starts on sample data and the key is pasted later), or click the EC2 launch if that sitting picks EC2. A
-   failed click gets one retry on Tue 27 Oct.
-2. Upload the video to YouTube as **Public** and paste the link, only if a video is made (27 Oct).
-3. Tick the agreement boxes and click **Submit** (28 Oct).
+instructions](#testing-instructions) and [Claims we decline to make](#claims-we-decline-to-make), and [Known
+limits](#known-limits) lists the known limitations.

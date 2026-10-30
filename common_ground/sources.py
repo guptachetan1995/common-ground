@@ -43,6 +43,19 @@ _PRICES = (1, 2, 3, 4, 2, 3)
 _KINDS = ("restaurant", "restaurant", "bar", "restaurant", "cafe", "restaurant", "restaurant")
 _CUISINES = ("italian", "thai", "japanese", "mexican", "indian", "french", "greek", "ethiopian")
 
+# The sample group's favourites come up first as what they are, so the sample demo's first match reads
+# right. Any other name keeps the arbitrary hashed order, and a person still says which match they meant.
+SAMPLE_TYPES = {
+    "lost in translation": "urn:entity:movie",
+    "jiro dreams of sushi": "urn:entity:movie",
+    "khruangbin": "urn:entity:artist",
+    "radiohead": "urn:entity:artist",
+    "the bear": "urn:entity:tv_show",
+    "dune": "urn:entity:book",
+    "patagonia": "urn:entity:brand",
+    "katz's delicatessen": "urn:entity:place",
+}
+
 TAGS = {
     slug: {"id": f"urn:tag:synthetic:{slug}", "name": name, "type": "urn:tag:synthetic:" + group}
     for slug, name, group in (
@@ -131,6 +144,9 @@ class FakeSource:
         return 404, {"success": False, "error": {"code": 404, "message": "no such route"}}
 
     def candidate_type_order(self, text: str, types: Sequence[str]) -> list[str]:
+        known = SAMPLE_TYPES.get(text.lower())
+        if known in types:
+            return [known, *(t for t in types if t != known)]
         turn = int(hashlib.sha256(text.lower().encode()).hexdigest()[:8], 16) % len(types)
         return list(types[turn:]) + list(types[:turn])
 

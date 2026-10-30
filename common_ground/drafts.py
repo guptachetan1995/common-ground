@@ -13,8 +13,12 @@ from .refusal import Refusal
 
 DRAFT_LINE = "DRAFT. Not signed off. Do not send."
 SENDER_NEEDED = "[sender name needed]"
-FALLBACK_EVIDENCE = "it sits in the upper half of each of our rankings, as Qloo orders them"
-LEAD_IN = "Qloo's taste data, which I used to find it, connects it to "
+# A sample-source outing never credits Qloo: its rankings and links come from the invented source.
+RANKER = {outings.LIVE: "Qloo", outings.SYNTHETIC: "the sample data"}
+LEAD_IN = {
+    outings.LIVE: "Qloo's taste data, which I used to find it, connects it to ",
+    outings.SYNTHETIC: "sample taste data, standing in for Qloo's, connects it to ",
+}
 KINDS = ("invitation", "booking_request")
 MAX_WORDS = 120
 MAX_SENDER = 60
@@ -67,10 +71,10 @@ def _names(out: Mapping, place: Mapping, inside: bool) -> list[str]:
     return [names[e["member"]] for e in place["perMember"] if e["inUpperHalf"] == inside]
 
 
-def _fit(snapshot: dict, clauses: list[str], fallback: str) -> None:
+def _fit(snapshot: dict, clauses: list[str], fallback: str, lead_in: str) -> None:
     """Choose the evidence sentence, dropping clauses from the end until the message fits MAX_WORDS."""
     while True:
-        snapshot["evidence"] = LEAD_IN + _join(clauses) if clauses else fallback
+        snapshot["evidence"] = lead_in + _join(clauses) if clauses else fallback
         if not clauses or len(render(snapshot).split()) <= MAX_WORDS:
             return
         clauses.pop()
@@ -80,15 +84,17 @@ def make_draft(out: Mapping, place: Mapping, kind: str, draft_id: str, revision:
     if kind not in KINDS:
         raise Refusal(outings.BAD_ARGUMENTS, "kind")
     left, inside = _names(out, place, False), _names(out, place, True)
+    ranker = RANKER[out["source"]]
     snapshot = {
         "kind": kind,
         "place": _one_line(place["name"]),
         "when": _one_line(out["when"] or out["conditions"]["day"].capitalize()),
         "people": len(out["members"]),
-        "caveat": f"One caveat: Qloo ranks it outside the upper half for {_join(left)}. " if left else "",
+        "caveat": f"One caveat: {ranker} ranks it outside the upper half for {_join(left)}. " if left else "",
     }
-    fallback = FALLBACK_EVIDENCE if not left else f"Qloo ranks it in the upper half for {_join(inside)}"
-    _fit(snapshot, _clauses(out, place), fallback)
+    fallback = (f"it sits in the upper half of each of our rankings, as {ranker} orders them" if not left
+                else f"{ranker} ranks it in the upper half for {_join(inside)}")
+    _fit(snapshot, _clauses(out, place), fallback, LEAD_IN[out["source"]])
     return {
         "draftId": draft_id,
         "placeId": place["entityId"],

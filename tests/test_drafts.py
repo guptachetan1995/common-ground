@@ -6,7 +6,8 @@ from common_ground import drafts, outings
 from tests.test_outings import candidates, counter, refused, sample_args
 
 
-def resolved_outing(resolver=None, favourites_per_member=None, when="Fri 6 Nov, 7:30 pm", names=None):
+def resolved_outing(resolver=None, favourites_per_member=None, when="Fri 6 Nov, 7:30 pm", names=None,
+                    source=outings.LIVE):
     """The sample outing with every favourite searched and resolved. `resolver` maps a favourite id to who
     resolved it (default: each member did)."""
     token = counter()
@@ -14,7 +15,7 @@ def resolved_outing(resolver=None, favourites_per_member=None, when="Fri 6 Nov, 
     args = {**sample_args(), "when": when}
     if names:
         args["members"] = [{"name": n, "favourites": f} for n, f in names]
-    doc, out = outings.open_outing(doc, ws, args, token=token, now=0.0)
+    doc, out = outings.open_outing(doc, ws, args, token=token, now=0.0, source=source)
     for m in outings.outing(doc, ws, out)["members"]:
         for f in m["favourites"]:
             doc = outings.store_candidates(doc, ws, out, m["id"], f["id"], candidates(f["id"]))
@@ -67,6 +68,18 @@ class Invitation(unittest.TestCase):
             "Tell me if it doesn't work for you, and what would.\n"
             "[sender name needed]"
         ))
+
+    def test_a_sample_outing_never_credits_qloo(self):
+        out = resolved_outing(source=outings.SYNTHETIC)
+        text = drafts.make_draft(out, place(out), "invitation", "d1", 1)["text"]
+        self.assertIn("Why this one: sample taste data, standing in for Qloo's, connects it to Noor's", text)
+        self.assertNotIn("Qloo's taste data", text)
+        upper_half = drafts.make_draft(out, place(out, because={}), "invitation", "d1", 1)["text"]
+        self.assertIn("as the sample data orders them", upper_half)
+        pia_out = place(out, left_out=("m3",), because={})
+        left_out = drafts.make_draft(out, pia_out, "invitation", "d1", 1)["text"]
+        self.assertIn("One caveat: the sample data ranks it outside the upper half for Pia.", left_out)
+        self.assertIn("Why this one: the sample data ranks it in the upper half for", left_out)
 
     def test_without_a_when_the_day_is_used(self):
         out = resolved_outing(when=None)
